@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+xmlns:fb="http://ogp.me/ns/fb#">
+
+<head>
+    <!-- Required meta tags-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="<%= doctor.profile.academic %>">
+    <meta name="author" content="Cliniva Healthcare">
+    <meta name="keywords" content="Online Doctor Consultation">
+    <meta property="og:image" content="https://api.cliniva.com.bd/resources/doctorWebCover/<%= doctor._id %>.jpg" />
+
+    <!-- Title Page-->
+    <title><%= doctor.name %></title>
+
+    <!-- Icons font CSS-->
+    <link href="vendor/mdi-font/css/material-design-iconic-font.min.css" rel="stylesheet" media="all">
+    <link href="vendor/font-awesome-4.7/css/font-awesome.min.css" rel="stylesheet" media="all">
+
+    <!-- Font special for pages-->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Muli">
+
+    <!-- Vendor CSS-->
+    <link href="vendor/select2/select2.min.css" rel="stylesheet" media="all">
+    <link href="vendor/datepicker/daterangepicker.css" rel="stylesheet" media="all">
+
+    <!-- Main CSS-->
+    <link href="css/main.css" rel="stylesheet" media="all">
+</head>
+
+<body>
+    <div class="page-wrapper bg-blue p-t-100 p-b-100 font-robo">
+        <div class="navbar">
+            <a class="active" href="#">
+                <img src="images/cliniva-logo.png">
+            </a>
+        </div>
+
+        <div class="wrapper wrapper--w680">
+
+            <div class="card card-1">
+                <div class="card-heading">
+                    <img style="max-height: 100%;width: 100%;" id="doctorImage" src="https://api.cliniva.com.bd/resources/doctorWebCover/<%= doctor._id %>.jpg">
+                </div>
+                <div class="card-body">
+
+                    <h2 class="font-doc" id="doctorName"><%= doctor.name %></h2>
+                    <h3 class="font-doc" style="color: lightskyblue;" id="speciality"><%= doctor.profile.speciality %></h3>
+                    <h5 class="font-doc input--style-1" id="academic"><%= doctor.profile.academic %></h5>
+                        <h5 class="font-doc input--style-1" id="professional"><%= doctor.profile.professional %></h5>
+                            <input type="text" style="visibility: hidden;" id="userName" value="<%= params %>">
+                            <h2 class="font-doc title" style="color: rgb(22, 136, 11);">Book Appointment</h2>
+
+                            <form>
+                                <div id="loader">
+                                    <div>
+
+                                    </div>
+                                </div>
+                                <div class="input-group">
+                                    <input class="input--style-1" type="text" placeholder="Name" id="name" required>
+                                </div>
+                                <div class="row row-space">
+                                    <div class="col-2">
+                                        <div class="input-group">
+                                            <input class="input--style-1 js-datepicker" type="text"
+                                                placeholder="Date of Birth" id="dob" required="">
+                                        </div>
+                                    </div>
+                                    <div class="col-2">
+                                        <div class="input-group">
+                                            <div class="rs-select2 js-select-simple select--no-search">
+                                                <select name="gender" id="gender" required="">
+                                                    <option disabled="disabled" selected="selected">Gender</option>
+                                                    <option>Male</option>
+                                                    <option>Female</option>
+                                                </select>
+                                                <div class="select-dropdown"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="input-group">
+                                    <div class="rs-select2 js-select-simple select--no-search">
+
+                                        <input class="input--style-1" type="text" placeholder="Phone Number" id="phone">
+                                    </div>
+                                </div>
+
+                                <div class="row row-space">
+                                    <h4 style="width: 100%; margin-bottom: 10px;">Appointment Time</h4>
+                                    <div class="col-1">
+                                        <select id="date" onchange="selectDate(this)" style="color: #716c6c;
+    border: 0px;
+    padding: 10px;
+    background: transparent;
+    font-size: 14px; margin-bottom: 10px; border-bottom: 2px solid #cccccc;">
+                                        </select>
+                                        <select id="time" style="color: #716c6c;
+    border: 0px;
+    padding: 10px;
+    background: transparent;
+    font-size: 14px;margin-bottom: 10px; border-bottom: 2px solid #cccccc; margin-left: 5px;">
+
+                                        </select>
+                                    </div>
+
+                                    <div class="col-1">
+
+                                    </div>
+                                </div>
+                                <div class="doctor-fee">
+                                    <!-- <span>Consultation Fee</span><br> -->
+                                    <br>
+                                    <h4 style="width: 100%; margin-bottom: 10px;">Consultation Fee</h4>
+                                    <b class="input--style-1" id="original_fee">BDT <%=doctor.pricing.package1%></b>
+                                    <!-- <b >BDT </b> -->
+                                    <!-- <b style="display: none; color: red;" id="discounted_fee"><span style="text-decoration: line-through; color: gray;">BDT</span> BDT </b>  -->
+                                </div>
+                                <div class="p-t-20">
+                                    <div id="error" style="border: 0px;
+    margin: 0 auto;
+    background-repeat: no-repeat;
+    background-position: 10px center;
+    display: none;
+    color: #D8000C;
+    background-color: transparent;
+    max-width: 400px;
+    width: 100%!important;
+    padding: 20px 20px 20px 100;">***Please fill up all the fields</div>
+                                    <input type="button" class="btn btn--radius btn--green" onclick="post()"
+                                        value="Submit">
+                                    <!-- <button class="btn btn--radius btn--green" onclick="post()">Submit</button> -->
+                                </div>
+                            </form>
+
+        <div class="tutorial" style="width: 100%">
+            <h5>ভিডিও কনসালটেশন কিভাবে করবেন</h5>
+            <iframe width="" height="315" src="https://www.youtube.com/embed/jaj0TYulC9k" frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen></iframe>
+        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Jquery JS-->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <!-- Vendor JS-->
+    <script src="vendor/select2/select2.min.js"></script>
+    <script src="vendor/datepicker/moment.min.js"></script>
+    <script src="vendor/datepicker/daterangepicker.js"></script>
+
+    <!-- Main JS-->
+    <script src="js/global.js"></script>
+
+</body><!-- This templates was made by Colorlib (https://colorlib.com) -->
+
+</html>
+<script>
+    function show_loader() {
+        $("#loader").addClass("loader");
+    }
+
+    function hide_loader() {
+        $("#loader").removeClass("loader");
+    }
+
+    let baseUrl = "https://api.cliniva.com.bd"
+    const url = new URLSearchParams(window.location.search)
+    let userName = document.getElementById("userName").value
+    console.log(userName);
+    let xhttp = new XMLHttpRequest();
+    let doctor;
+    let selectedDate;
+    xhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+            let data = JSON.parse(this.responseText)
+            doctor = data.data;
+            console.log(doctor.schedules);
+            $.each(doctor.schedules, function (i, item) {
+                $('#date').append($('<option>', {
+                    value: item.date,
+                    text: moment(item.date).format('ll')
+                }));
+            });
+            $.each(doctor.schedules[0].slots, function (i, item) {
+                $('#time').append($('<option>', {
+                    value: item,
+                    text: item
+                }));
+            });
+        } else if (this.status == 409) {
+            let data = JSON.parse(this.responseText)
+        }
+    };
+    xhttp.open("GET", baseUrl + "/api/v1/doctor/profile/" + userName + "/web", true);
+    xhttp.send();
+    let selectDate = (sel) => {
+        selectedDate = document.getElementById("date").value
+        document.getElementById("time").innerHTML = ""
+        let slots
+        doctor.schedules.map((item) => {
+            if (item.date == selectedDate) {
+                slots = item.slots
+            }
+        })
+        $.each(slots, function (i, item) {
+            $('#time').append($('<option>', {
+                value: item,
+                text: item
+            }));
+        });
+
+    }
+    let post = () => {
+        let sex = 0;
+        if (document.getElementById("gender").value == "Female") {
+            sex = 1
+        }
+        let date = document.getElementById("date").value + " " + moment(document.getElementById("time").value, ["h:mm A"]).format("HH:mm")
+        let body = {
+            "name": document.getElementById("name").value,
+            "sex": sex,
+            "phone": document.getElementById("phone").value,
+            "dob": document.getElementById("dob").value,
+            "date": moment(date).format(),
+            "regId": url.get("id")
+        }
+        console.log(body);
+        if (body.name == "" || body.phone == "" || body.dob == "" || body.date == "") {
+            document.getElementById("error").style.display = "inline"
+        } else {
+            show_loader()
+            $.post(baseUrl + "/api/v1/appointment/virtual/create/web", body, function (data) {
+                window.location.replace("thanks.html?id=" + data.data._id + "&patient=" + body.name + "&doctor=" + doctor.name + "&speciality=" + doctor.profile.speciality + "&fee=" + doctor.pricing.package1);
+            });
+        }
+    }
+</script>
