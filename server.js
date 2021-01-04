@@ -21,7 +21,7 @@ app.get('/', async (req, res) => {
     res.render("index");
 })
 
-app.get('/:doctor', async (req, res) => {
+app.get('/dr/:doctor', async (req, res) => {
     console.log(req.params.doctor);
     let url = "https://api.cliniva.com.bd/api/v1/doctor/profile/" + req.params.doctor + "/web"
     axios.get(url)
