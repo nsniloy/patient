@@ -22,25 +22,23 @@ app.get('/', async (req, res) => {
 })
 
 app.get('/:doctor', async (req, res) => {
-    console.log(req.params.doctor);
-    let url = "https://api.cliniva.com.bd/api/v1/doctor/profile/" + req.params.doctor + "/web"
-    axios.get(url)
-        .then(async function (response) {
-            if (response.data) {
-                res.render("doctor", {
-                    doctor: response.data.data,
-                    params : req.params.doctor
-                });
-            }
-        })
-        // .catch(function (error) {
-        //     console.log(error);
-        // })
+    if (req.params.doctor) {
+        let url = "https://api.cliniva.com.bd/api/v1/doctor/profile/" + req.params.doctor + "/web"
+        axios.get(url)
+            .then(async function (response) {
+                if (response.data) {
+                    res.render("doctor", {
+                        doctor: response.data.data,
+                        params: req.params.doctor
+                    });
+                }
+            })
+    }
 })
 
 app.get('/pay/:id', async (req, res) => {
     console.log(req.params.id);
     res.render("pay", {
-        params : req.params.id
+        params: req.params.id
     });
 })
