@@ -17,6 +17,10 @@ const port = process.env.PORT || 7001;
 server.listen(port, _ => console.log('Example app listening on port :' + port));
 
 
+app.get('/', async (req, res) => {
+    res.render("index");
+})
+
 app.get('/:doctor', async (req, res) => {
     console.log(req.params.doctor);
     let url = "https://api.cliniva.com.bd/api/v1/doctor/profile/" + req.params.doctor + "/web"
@@ -32,4 +36,11 @@ app.get('/:doctor', async (req, res) => {
         // .catch(function (error) {
         //     console.log(error);
         // })
+})
+
+app.get('/pay/:id', async (req, res) => {
+    console.log(req.params.id);
+    res.render("pay", {
+        params : req.params.id
+    });
 })

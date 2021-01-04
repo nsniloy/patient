@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <!-- Required meta tags-->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="Colorlib Templates">
+  <meta name="author" content="Colorlib">
+  <meta name="keywords" content="Colorlib Templates">
+
+  <!-- Title Page-->
+  <title>Cliniva</title>
+
+  <!-- Icons font CSS-->
+  <link href="/vendor/mdi-font/css/material-design-iconic-font.min.css" rel="stylesheet" media="all">
+  <link href="/vendor/font-awesome-4.7/css/font-awesome.min.css" rel="stylesheet" media="all">
+
+  <!-- Font special for pages-->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i"
+    rel="stylesheet">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Muli">
+
+  <!-- Vendor CSS-->
+  <link href="/vendor/select2/select2.min.css" rel="stylesheet" media="all">
+  <link href="/vendor/datepicker/daterangepicker.css" rel="stylesheet" media="all">
+
+  <!-- Main CSS-->
+  <link href="/css/main.css" rel="stylesheet" media="all">
+</head>
+
+<body>
+  <div class="page-wrapper bg-blue p-t-100 p-b-100 font-robo">
+    <div class="navbar">
+      <a class="active" href="#">
+        <img src="/images/cliniva-logo.png">
+      </a>
+    </div>
+
+    <div class="wrapper wrapper--w680">
+      <input type="text" style="visibility: hidden;" id="callId" value="<%= params %>">
+      <div class="card card-1">
+        <div class="thanks-heading">
+          <i class="fa fa-check" aria-hidden="true"></i>
+          <h5>THANK YOU</h5>
+          <p>Your appointment request has been received! Please complete your payment. Your appointment is on-hold until
+            we Receive your Payment. </p>
+        </div>
+        <div id="loader">
+          <div>
+
+          </div>
+        </div>
+        <div class="card-body">
+
+          <table>
+            <tr>
+              <td>Doctor</td>
+              <td id="doctor">Dr. </td>
+            </tr>
+            <tr>
+              <td>Speciality</td>
+              <td id="speciality">Gyneocologist</td>
+            </tr>
+            <tr>
+              <td>Patient</td>
+              <td id="patient">Maliha Binta Giash</td>
+            </tr>
+            <tr>
+              <td>Fee</td>
+              <td id="fee">600 BDT</td>
+            </tr>
+          </table>
+          <button class="btn btn--radius btn--green" style=" margin-left: 10px;" onclick="pay()">Complete
+            payment</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <!-- Jquery JS-->
+  <script src="/vendor/jquery/jquery.min.js"></script>
+  <!-- Vendor JS-->
+  <script src="/vendor/select2/select2.min.js"></script>
+  <script src="/vendor/datepicker/moment.min.js"></script>
+  <script src="/vendor/datepicker/daterangepicker.js"></script>
+
+  <!-- Main JS-->
+  <script src="/js/global.js"></script>
+
+</body><!-- This templates was made by Colorlib (https://colorlib.com) -->
+
+</html>
+<script>
+  let baseUrl = "https://api.cliniva.com.bd"
+  const url = new URLSearchParams(window.location.search)
+  document.getElementById("doctor").innerHTML = url.get("doctor")
+  document.getElementById("patient").innerHTML = url.get("patient")
+  document.getElementById("speciality").innerHTML = url.get("speciality")
+  document.getElementById("fee").innerHTML = url.get("fee")
+  let _id = document.getElementById("callId").value
+  console.log(_id);
+  let pay = () => {
+    $.get(baseUrl + "/api/v1/call/pay/ssl/" + _id, function (data) {
+      console.log(data);
+      window.open(data.data.GatewayPageURL);
+    });
+  }
+</script>
+<!-- end document-->

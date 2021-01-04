@@ -53,6 +53,7 @@ xmlns:fb="http://ogp.me/ns/fb#">
                     <h5 class="font-doc input--style-1" id="academic"><%= doctor.profile.academic %></h5>
                         <h5 class="font-doc input--style-1" id="professional"><%= doctor.profile.professional %></h5>
                             <input type="text" style="visibility: hidden;" id="userName" value="<%= params %>">
+                            <input type="text" style="visibility: hidden;" id="doctorId" value="<%= doctor._id %>">
                             <h2 class="font-doc title" style="color: rgb(22, 136, 11);">Book Appointment</h2>
 
                             <form>
@@ -230,7 +231,7 @@ xmlns:fb="http://ogp.me/ns/fb#">
             "phone": document.getElementById("phone").value,
             "dob": document.getElementById("dob").value,
             "date": moment(date).format(),
-            "regId": url.get("id")
+            "doctorId": document.getElementById("doctorId").value
         }
         console.log(body);
         if (body.name == "" || body.phone == "" || body.dob == "" || body.date == "") {
@@ -238,7 +239,7 @@ xmlns:fb="http://ogp.me/ns/fb#">
         } else {
             show_loader()
             $.post(baseUrl + "/api/v1/appointment/virtual/create/web", body, function (data) {
-                window.location.replace("thanks.html?id=" + data.data._id + "&patient=" + body.name + "&doctor=" + doctor.name + "&speciality=" + doctor.profile.speciality + "&fee=" + doctor.pricing.package1);
+                window.location.replace("/pay/" + data.data._id + "?patient=" + body.name + "&doctor=" + doctor.name + "&speciality=" + doctor.profile.speciality + "&fee=" + doctor.pricing.package1);
             });
         }
     }
